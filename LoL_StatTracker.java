@@ -14,7 +14,7 @@ public class LoL_StatTracker
             if (myFile.createNewFile())
                 System.out.println("CSV file \"game_stats\" created.");
             else 
-                System.out.println("Loading file \"game_stats.csv\"");
+                System.out.println("Loading file \"game_stats.csv\"\n");
         }
         catch (IOException e)
         {
@@ -24,10 +24,36 @@ public class LoL_StatTracker
 
         // Read the CSV file into a Stats object.
         Stats myStats = new Stats();
+        try
+        {
+            Scanner csvRead = new Scanner(new File("game_stats.csv"));
+            while (csvRead.hasNextLine())
+            {
+                String[] data = csvRead.nextLine().split(",");
+                int teamCarries = Integer.parseInt(data[0]), 
+                    teamInters  = Integer.parseInt(data[1]), 
+                    enemyCarries= Integer.parseInt(data[2]), 
+                    enemyInters = Integer.parseInt(data[3]),
+                    carry       = Integer.parseInt(data[4]),
+                    inter       = Integer.parseInt(data[5]),
+                    won         = Integer.parseInt(data[6]);
+                boolean iCarry = false, iInt = false, win = false;
+                if (carry == 1)  iCarry= true;
+                if (inter == 1)  iInt  = true;
+                if (won == 1)    win   = true;
+                myStats.addGame(new Game(teamCarries, teamInters, enemyCarries, enemyInters,
+                                        iCarry, iInt, win));
+            }
+            csvRead.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error.");
+            e.printStackTrace();
+        }
 
         // Input and write new Games into the CSV file.
         Scanner input = new Scanner(System.in);
-
         String record;
         do 
         {
@@ -88,9 +114,23 @@ public class LoL_StatTracker
                                         enemyInters, iCarry, iInt, win));
                     
                     // write to file
-
-                    
-                    System.out.println("Recorded.");
+                    try
+                    {
+                        FileWriter newEntry = new FileWriter("game_stats.csv", true);
+                        int carry = 0, inter = 0, won = 0;
+                        if (iCarry) carry = 1;
+                        if (iInt)   inter = 1;
+                        if (win)    won   = 1;
+                        newEntry.write("\n" + teamCarries + "," + teamInters + "," + enemyCarries
+                         + "," + enemyInters + "," + carry + "," + inter + "," + won);
+                        newEntry.close();
+                        System.out.println("Recorded.");
+                    }
+                    catch (IOException e)
+                    {
+                        System.out.println("Error.");
+                        e.printStackTrace();
+                    }
                 }
                 else
                     System.out.println("Restarting...");
