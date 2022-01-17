@@ -14,7 +14,7 @@ public class Stats
         int[] stats = new int[7];
         int teamTotalCarries = 0;
         int teamTotalInters = 0;
-        int ememyTotalCarries = 0;
+        int enemyTotalCarries = 0;
         int enemyTotalInters = 0;
         int totalCarries = 0;
         int totalInts = 0;
@@ -27,9 +27,9 @@ public class Stats
             teamTotalInters += curr.getTeamInters();
             enemyTotalCarries += curr.getEnemyCarries();
             enemyTotalInters += curr.getEnemyInters();
-            totalCarries += curr.getICarry();
-            totalInts += curr.getIInt();
-            totalWins += curr.getWins();
+            if (curr.getICarry()) totalCarries++;
+            if (curr.getIInt()) totalInts++;
+            if (curr.getWin()) totalWins++;
         }
 
         stats[0] = teamTotalCarries / myData.size();
@@ -50,7 +50,7 @@ public class Stats
         for (int i = 0; i < myData.size(); i++)
         {
             Game curr = myData.get(i);
-            if (curr.getICarry() == 1 && !curr.getIWin())
+            if (curr.getICarry() && !curr.getWin())
                 total++;
         }
         return total;
@@ -63,7 +63,7 @@ public class Stats
         for (int i = 0; i < myData.size(); i++)
         {
             Game curr = myData.get(i);
-            if (curr.getIInt() == 1 && curr.getIWin())
+            if (curr.getIInt() && curr.getWin())
                 total++;
         }
         return total;
