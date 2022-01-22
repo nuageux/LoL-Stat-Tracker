@@ -8,6 +8,7 @@ public class Game
     private boolean iInt;
     private boolean win;
 
+    // default constructor
     public Game()
     {
         this.numTeamCarries = 0;
@@ -19,6 +20,7 @@ public class Game
         this.win = false;
     }
 
+    // constructor with params
     public Game(int numTeamCarries, int numTeamInters, int numEnemyCarries,
                     int numEnemyInters, boolean iCarry, boolean iInt, boolean win)
     {
@@ -31,6 +33,7 @@ public class Game
         this.win = win;
     }
 
+    // list of access methods
     public int getTeamCarries()
     {
         return numTeamCarries;
